@@ -1,9 +1,8 @@
 package com.example.Farming_App.services.impl;
 
-import com.example.Farming_App.entity.Account;
+import com.example.Farming_App.handler.ResourceNotFoundException;
 import com.example.Farming_App.repositories.AccountRepository;
 import com.example.Farming_App.services.AccountService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,8 +20,8 @@ public class AccountServiceImpl implements AccountService {
         return new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                return accountRepository.findByUsername(username)
-                        .orElseThrow(()->new UsernameNotFoundException("User not found"));
+                return accountRepository.findByMail(username)
+                        .orElseThrow(()->new ResourceNotFoundException("User","email",username));
             }
         };
     }

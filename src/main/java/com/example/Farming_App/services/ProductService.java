@@ -9,4 +9,6 @@ public interface ProductService {
     boolean addProduct(ProductDto productDto);
 
     List<ProductDto> getListProduct();
+
+    int removeProductById(Long id);
 }

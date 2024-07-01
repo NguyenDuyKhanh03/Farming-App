@@ -8,4 +8,6 @@ import com.example.Farming_App.entity.Account;
 public interface AuthenticationService {
     Account signup(SignUpRequest signUpRequest);
     JwtAuthenticationResponse signin(SignInRequest signInRequest);
+    int resetPassword(String mail,String newPassword);
+
 }

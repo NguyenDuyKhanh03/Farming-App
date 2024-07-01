@@ -1,0 +1,11 @@
+spring:
+  application:
+    name:Farming-App
+
+open:
+  api:
+    title:API document
+    version:v1.0.0
+    description:Mo ta api service
+    serverUrl:http://localhost:8080
+    serverName:server test

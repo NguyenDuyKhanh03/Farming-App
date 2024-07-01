@@ -13,10 +13,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @SpringBootApplication
 public class FarmingAppApplication implements CommandLineRunner {
 
-	@Autowired
-	private AccountRepository accountRepository;
-	@Autowired
-	private RoleRepository roleRepository;
+//	@Autowired
+//	private AccountRepository accountRepository;
+//	@Autowired
+//	private RoleRepository roleRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(FarmingAppApplication.class, args);
