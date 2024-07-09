@@ -3,6 +3,7 @@ package com.example.Farming_App.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.util.Date;
 import java.util.List;
@@ -33,14 +34,14 @@ public class Product {
     @Column(name = "create_at")
     private Date createAt;
 
-    @CreationTimestamp
+    @LastModifiedDate
     @Column(name = "update_at")
     private Date updateAt;
 
-    private int quantity;
+    private double quantity;
 
     @Column(name = "sold_quantity")
-    private int soldQuantity;
+    private double soldQuantity;
 
     @ManyToOne
     @JoinColumn(name = "account_id")

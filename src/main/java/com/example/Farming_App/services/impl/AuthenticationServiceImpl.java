@@ -1,26 +1,22 @@
 package com.example.Farming_App.services.impl;
 
 import com.example.Farming_App.dto.JwtAuthenticationResponse;
-import com.example.Farming_App.dto.MailDto;
 import com.example.Farming_App.dto.SignInRequest;
 import com.example.Farming_App.dto.SignUpRequest;
 import com.example.Farming_App.entity.Account;
-import com.example.Farming_App.handler.AccountAlreadyExistsException;
-import com.example.Farming_App.handler.ResourceNotFoundException;
+import com.example.Farming_App.exception.AccountAlreadyExistsException;
+import com.example.Farming_App.exception.ResourceNotFoundException;
 import com.example.Farming_App.repositories.AccountRepository;
 import com.example.Farming_App.repositories.RoleRepository;
 import com.example.Farming_App.services.AuthenticationService;
 import com.example.Farming_App.services.JWTService;
 import lombok.RequiredArgsConstructor;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
-import java.util.Optional;
-import java.util.Random;
 
 @Service
 @RequiredArgsConstructor

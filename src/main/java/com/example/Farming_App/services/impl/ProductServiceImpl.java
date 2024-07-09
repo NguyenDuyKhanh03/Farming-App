@@ -5,7 +5,7 @@ import com.example.Farming_App.entity.Account;
 import com.example.Farming_App.entity.Category;
 import com.example.Farming_App.entity.Image;
 import com.example.Farming_App.entity.Product;
-import com.example.Farming_App.handler.ResourceNotFoundException;
+import com.example.Farming_App.exception.ResourceNotFoundException;
 import com.example.Farming_App.mapper.Mapper;
 import com.example.Farming_App.repositories.AccountRepository;
 import com.example.Farming_App.repositories.CategoryRepository;
@@ -13,7 +13,6 @@ import com.example.Farming_App.repositories.ProductRepository;
 import com.example.Farming_App.services.ImageService;
 import com.example.Farming_App.services.JWTService;
 import com.example.Farming_App.services.ProductService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +20,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.plaf.PanelUI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -105,5 +105,17 @@ public class ProductServiceImpl implements ProductService {
                         ()-> new ResourceNotFoundException("Product","id",String.valueOf(id))
                 );
         return productRepository.removeProductById(id);
+    }
+
+    public List<ProductDto> searchProduct(String keyword){
+        List<Product> products=productRepository.search(keyword)
+                .orElseThrow(
+                        ()-> new ResourceNotFoundException("Product","keyword",keyword)
+                );
+        if(products.isEmpty())
+            throw  new ResourceNotFoundException("Product","keyword",keyword);
+        return products.stream()
+                .map(mapper::mapTo)
+                .collect(Collectors.toList());
     }
 }

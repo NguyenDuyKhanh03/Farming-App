@@ -26,6 +26,6 @@ public class CartDetail {
     @JoinColumn(name = "cart_id")
     private Cart cart;
 
-    private int quantity;
+    private double quantity;
     private int discount;
 }

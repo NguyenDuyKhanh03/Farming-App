@@ -3,7 +3,10 @@ package com.example.Farming_App.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -23,7 +26,7 @@ public class Post {
 
     private String content;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
     private Account authors;
 
@@ -36,11 +39,14 @@ public class Post {
     private Date createAt;
 
     @Column(name = "update_at")
-    @CreationTimestamp
+    @LastModifiedDate
     private Date updateAt;
 
     private int status;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Image> images;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Comment> comments=new ArrayList<>();
 }

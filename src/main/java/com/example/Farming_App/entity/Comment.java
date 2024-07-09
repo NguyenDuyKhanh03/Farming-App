@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.util.Date;
 
@@ -22,7 +23,7 @@ public class Comment {
 
     private String content;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
     private Account parentId;
 
@@ -31,6 +32,9 @@ public class Comment {
     private Date createAt;
 
     @Column(name = "update_at")
-    @CreationTimestamp
+    @LastModifiedDate
     private Date updateAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Post post;
 }

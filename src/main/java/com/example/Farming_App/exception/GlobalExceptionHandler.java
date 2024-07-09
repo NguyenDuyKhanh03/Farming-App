@@ -1,4 +1,4 @@
-package com.example.Farming_App.handler;
+package com.example.Farming_App.exception;
 
 import com.example.Farming_App.dto.ErrorResponseDto;
 import org.springframework.http.HttpHeaders;
@@ -36,6 +36,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(validationErrors,HttpStatus.BAD_REQUEST);
 
     }
+
+    @ExceptionHandler(InvalidArgumentException.class)
+    public ResponseEntity<ErrorResponseDto> InvalidArgumentException(InvalidArgumentException exception,
+                                                                     WebRequest webRequest){
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(
+                webRequest.getDescription(false),
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(errorResponseDto,HttpStatus.NOT_FOUND);
+    }
+
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDto> handleGlobalException(Exception exception,

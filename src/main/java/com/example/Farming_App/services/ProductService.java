@@ -11,4 +11,5 @@ public interface ProductService {
     List<ProductDto> getListProduct();
 
     int removeProductById(Long id);
+    List<ProductDto> searchProduct(String keyword);
 }

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.util.Date;
 import java.util.List;
@@ -38,7 +39,7 @@ public class Article {
     private Date createAt;
 
     @Column(name = "update_at")
-    @CreationTimestamp
+    @LastModifiedDate
     private Date updateAt;
 
     private int status;

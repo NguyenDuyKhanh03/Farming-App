@@ -1,11 +1,49 @@
 spring:
   application:
-    name:Farming-App
+    name: farming-App
+  datasource:
+    url: jdbc:postgresql://localhost:5432/FarmingApp
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  sql:
+    init:
+      mode: always
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: Facebook
+    password: fcmhpukoxswqtjhe
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+
 
 open:
   api:
-    title:API document
-    version:v1.0.0
-    description:Mo ta api service
-    serverUrl:http://localhost:8080
-    serverName:server test
+    title: API document
+    version: v1.0.0
+    description: Mo ta api service
+    serverUrl: http://localhost:8080
+    serverName: server test
+
+
+# Cấu hình URL và token của API GHN
+ghn:
+    api:
+      url: https://online-gateway.ghn.vn
+      token: 199acb3e-3b64-11ef-a3f8-86d541dd462b
+      shopid: 5151825
+
+
+

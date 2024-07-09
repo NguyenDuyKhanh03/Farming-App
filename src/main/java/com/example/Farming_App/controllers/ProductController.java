@@ -73,4 +73,18 @@ public class ProductController {
 
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<?> searchProduct(@RequestParam String keyword){
+        List<ProductDto> productDtos=productService.searchProduct(keyword);
+        if(productDtos!=null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(productDtos);
+        else{
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ResponseDto(ProductsConstants.STATUS_500,ProductsConstants.MESSAGE_500));
+        }
+    }
+
 }
