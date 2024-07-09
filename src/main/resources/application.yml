@@ -2,9 +2,9 @@ spring:
   application:
     name: farming-App
   datasource:
-    url: jdbc:postgresql://localhost:5432/FarmingApp
-    username: postgres
-    password: postgres
+    url: jdbc:postgresql://rosie.db.elephantsql.com:5432/idkxrqnk
+    username: idkxrqnk
+    password: sC9tkVyWEYL5LkgzTx6V9s7VD52g39qF
     driver-class-name: org.postgresql.Driver
   sql:
     init:

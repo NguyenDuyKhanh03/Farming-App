@@ -36,9 +36,10 @@ public class ProductDto {
     private Long categoryId;
 
     @NotEmpty(message = "Quantity can not be a null or empty")
-    private int quantity;
+    private double quantity;
 
-    private int soldQuantity;
+    private double soldQuantity;
+
     @NotEmpty(message = "Seller can not be a null or empty")
     private Account seller;
 
