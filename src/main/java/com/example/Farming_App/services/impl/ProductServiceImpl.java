@@ -7,12 +7,13 @@ import com.example.Farming_App.entity.Image;
 import com.example.Farming_App.entity.Product;
 import com.example.Farming_App.exception.ResourceNotFoundException;
 import com.example.Farming_App.mapper.Mapper;
-import com.example.Farming_App.repositories.AccountRepository;
-import com.example.Farming_App.repositories.CategoryRepository;
-import com.example.Farming_App.repositories.ProductRepository;
+import com.example.Farming_App.mapper.impl.JsonMapper;
+import com.example.Farming_App.repositories.*;
 import com.example.Farming_App.services.ImageService;
 import com.example.Farming_App.services.JWTService;
 import com.example.Farming_App.services.ProductService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,9 +21,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.swing.plaf.PanelUI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -36,12 +37,14 @@ public class ProductServiceImpl implements ProductService {
     private final ImageService imageService;
     private final CategoryRepository categoryRepository;
 
+    private final ProductRedisRepository productRedisRepository;
 
+    private final JsonMapper<ProductDto> productJsonMapper;
     public boolean addProduct(ProductDto productDto) {
 
         Optional<Account> account=getAccount();
-        if(account.isPresent())
-            productDto.setSeller(account.get());
+//        if(account.isPresent())
+//            productDto.setSeller(account.get());
 
         productDto.setSoldQuantity(0);
 
@@ -89,9 +92,17 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDto> getListProduct() {
         Optional<Account> account=getAccount();
-        List<Product> products=productRepository.findBySeller(account.get());
-        return products.stream()
-                .map(mapper::mapTo)
+        List<String> s=productRedisRepository.findAllProductsBySeller(account.get().getId());
+        if(s==null || s.isEmpty()) {
+            List<Product> products=productRepository.findBySeller(account.get());
+            List<ProductDto> productDtos=products.stream()
+                    .map(mapper::mapTo)
+                    .collect(Collectors.toList());
+            productDtos.forEach(productRedisRepository::saveProduct);
+            return productDtos;
+        }
+        return s.stream()
+                .map(this::convertJsonToProductDto)
                 .collect(Collectors.toList());
     }
 
@@ -118,4 +129,10 @@ public class ProductServiceImpl implements ProductService {
                 .map(mapper::mapTo)
                 .collect(Collectors.toList());
     }
+
+    private ProductDto convertJsonToProductDto(String productJson) {
+        return productJsonMapper.mapFrom(productJson,ProductDto.class);
+    }
+
+
 }

@@ -7,6 +7,7 @@ import com.example.Farming_App.mapper.Mapper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.Mapping;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductMapperImpl implements Mapper<Product, ProductDto> {
     private final ModelMapper modelMapper;
+
     @Override
     public ProductDto mapTo(Product product) {
         ProductDto productDto = new ProductDto();
@@ -26,7 +28,7 @@ public class ProductMapperImpl implements Mapper<Product, ProductDto> {
         productDto.setCategoryId(product.getCategory().getId());
         productDto.setQuantity(product.getQuantity());
         productDto.setSoldQuantity(product.getSoldQuantity());
-        productDto.setSeller(product.getSeller());
+//        productDto.setSeller(product.getSeller());
 
         List<String> urls=new ArrayList<>();
         for(Image image:product.getImages()){

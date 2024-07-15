@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/v1/product")
@@ -54,8 +55,15 @@ public class ProductController {
     }
 
     @GetMapping("/list-product")
-    public ResponseEntity<List<ProductDto>> getListProductFromUser(){
-        return ResponseEntity.ok(productService.getListProduct());
+    public ResponseEntity<?> getListProductFromUser(){
+        List<ProductDto> productDtos=productService.getListProduct();
+        if(productDtos.isEmpty() || Objects.isNull(productDtos))
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ResponseDto(ProductsConstants.STATUS_500,ProductsConstants.MESSAGE_500));
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(productDtos);
     }
 
     @DeleteMapping("/remove-product/{id}")
