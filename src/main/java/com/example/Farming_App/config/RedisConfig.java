@@ -19,9 +19,14 @@ public class RedisConfig {
     @Value("${spring.data.redis.port}")
     int port;
 
+    @Value("${spring.data.redis.password}")
+    String password;
+
     @Bean
     public JedisConnectionFactory jedisConnectionFactory() {
-        return new JedisConnectionFactory(new RedisStandaloneConfiguration(host, port));
+        RedisStandaloneConfiguration redisStandaloneConfiguration=new RedisStandaloneConfiguration(host,port);
+        redisStandaloneConfiguration.setPassword(password);
+        return new JedisConnectionFactory(redisStandaloneConfiguration);
     }
 
     @Bean
