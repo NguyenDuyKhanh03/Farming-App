@@ -8,8 +8,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.stereotype.Service;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -17,16 +20,16 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class DailyPriceUpdatesServiceImpl implements DailyPriceUpdatesService {
 
-    public List<DataPrice> getDailyPriceUpdates() throws InterruptedException {
+    public List<DataPrice> getDailyPriceUpdates() throws InterruptedException, MalformedURLException {
 
         List<DataPrice> dataPrices=new ArrayList<>();
 
-        System.setProperty("webdriver.edge.driver", "C:\\edgedriver_win64\\msedgedriver.exe");
+//        System.setProperty("webdriver.edge.driver", "C:\\edgedriver_win64\\msedgedriver.exe");
         EdgeOptions options = new EdgeOptions();
         options.addArguments("--remote-allow-origins=*");
 
         // Khởi tạo WebDriver
-        WebDriver driver = new EdgeDriver(options);
+        WebDriver driver = new RemoteWebDriver(new URL("http://localhost:4444/"), options);
 
         // Mở trang web
         driver.get("https://giaca.nsvl.com.vn/TCTongHop.aspx");

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.MalformedURLException;
 import java.util.List;
 
 @RestController
@@ -16,7 +17,7 @@ import java.util.List;
 public class DailyPriceUpdatesController {
     private final DailyPriceUpdatesService dailyPriceUpdatesService;
     @GetMapping("/")
-    public List<DataPrice> getDailyPrice() throws InterruptedException {
+    public List<DataPrice> getDailyPrice() throws InterruptedException, MalformedURLException {
         return dailyPriceUpdatesService.getDailyPriceUpdates();
     }
 }

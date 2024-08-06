@@ -1,4 +1,4 @@
-package com.example.Farming_App.dto;
+package com.example.Farming_App.dto.product;
 
 import com.example.Farming_App.entity.Account;
 import com.example.Farming_App.entity.Category;
@@ -45,6 +45,6 @@ public class ProductDto {
 //    @NotEmpty(message = "Seller can not be a null or empty")
 //    private Account seller;
 
-    private List<MultipartFile> images;
-    private List<String> image;
+//    private List<MultipartFile> images;
+//    private List<String> image;
 }

@@ -1,14 +1,15 @@
 package com.example.Farming_App.services;
 
-import com.example.Farming_App.dto.ProductDto;
-import org.springframework.http.ResponseEntity;
+import com.example.Farming_App.dto.product.ProductDto;
+import com.example.Farming_App.dto.product.ProductRequest;
+import com.example.Farming_App.dto.product.ProductResponse;
 
 import java.util.List;
 
 public interface ProductService {
-    boolean addProduct(ProductDto productDto);
+    boolean addProduct(ProductRequest productRequest);
 
-    List<ProductDto> getListProduct();
+    List<ProductResponse> getListProduct();
 
     int removeProductById(Long id);
     List<ProductDto> searchProduct(String keyword);

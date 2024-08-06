@@ -1,7 +1,6 @@
 package com.example.Farming_App.repositories;
 
-import com.example.Farming_App.dto.ProductDto;
-import com.example.Farming_App.entity.Product;
+import com.example.Farming_App.dto.product.ProductDto;
 
 import java.util.List;
 

@@ -1,6 +1,8 @@
 package com.example.Farming_App.services.impl;
 
-import com.example.Farming_App.dto.ProductDto;
+import com.example.Farming_App.dto.product.ProductDto;
+import com.example.Farming_App.dto.product.ProductRequest;
+import com.example.Farming_App.dto.product.ProductResponse;
 import com.example.Farming_App.entity.Account;
 import com.example.Farming_App.entity.Category;
 import com.example.Farming_App.entity.Image;
@@ -12,8 +14,6 @@ import com.example.Farming_App.repositories.*;
 import com.example.Farming_App.services.ImageService;
 import com.example.Farming_App.services.JWTService;
 import com.example.Farming_App.services.ProductService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,7 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -32,32 +31,32 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final AccountRepository accountRepository;
-    private final Mapper<Product,ProductDto> mapper;
+    private final Mapper<Product,ProductResponse> mapper;
     private final JWTService jwtService;
     private final ImageService imageService;
     private final CategoryRepository categoryRepository;
 
     private final ProductRedisRepository productRedisRepository;
 
-    private final JsonMapper<ProductDto> productJsonMapper;
-    public boolean addProduct(ProductDto productDto) {
+    private final JsonMapper<ProductResponse> productJsonMapper;
+    public boolean addProduct(ProductRequest productRequest) {
 
         Optional<Account> account=getAccount();
 //        if(account.isPresent())
 //            productDto.setSeller(account.get());
 
-        productDto.setSoldQuantity(0);
+        productRequest.setSoldQuantity(0);
 
         Product product = new Product();
-        product.setName(productDto.getName());
-        product.setPrice(productDto.getPrice());
-        product.setDiscount(productDto.getDiscount());
-        product.setDescription(productDto.getDescription());
+        product.setName(productRequest.getName());
+        product.setPrice(productRequest.getPrice());
+        product.setDiscount(productRequest.getDiscount());
+        product.setDescription(productRequest.getDescription());
         // Load the category from the database
-        Category category = categoryRepository.findById(productDto.getCategoryId())
-                .orElseThrow(() -> new ResourceNotFoundException("Category","id",String.valueOf(productDto.getCategoryId())));
+        Category category = categoryRepository.findById(productRequest.getCategoryId())
+                .orElseThrow(() -> new ResourceNotFoundException("Category","id",String.valueOf(productRequest.getCategoryId())));
         product.setCategory(category);
-        product.setQuantity(productDto.getQuantity());
+        product.setQuantity(productRequest.getQuantity());
         product.setSoldQuantity(0);
         product.setSeller(account.get());
 
@@ -65,7 +64,7 @@ public class ProductServiceImpl implements ProductService {
         Product savedProduct= productRepository.save(product);
 
         List<Image> images = new ArrayList<>();
-        for (MultipartFile file : productDto.getImages()) {
+        for (MultipartFile file : productRequest.getImages()) {
             String imageUrl = imageService.upload(file);
             Image image = new Image();
             image.setUrl(imageUrl);
@@ -90,16 +89,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDto> getListProduct() {
+    public List<ProductResponse> getListProduct() {
         Optional<Account> account=getAccount();
         List<String> s=productRedisRepository.findAllProductsBySeller(account.get().getId());
         if(s==null || s.isEmpty()) {
             List<Product> products=productRepository.findBySeller(account.get());
-            List<ProductDto> productDtos=products.stream()
+            List<ProductResponse> productResponses=products.stream()
                     .map(mapper::mapTo)
                     .collect(Collectors.toList());
-            productDtos.forEach(productRedisRepository::saveProduct);
-            return productDtos;
+            productResponses.forEach(productRedisRepository::saveProduct);
+            return productResponses;
         }
         return s.stream()
                 .map(this::convertJsonToProductDto)
@@ -130,8 +129,8 @@ public class ProductServiceImpl implements ProductService {
                 .collect(Collectors.toList());
     }
 
-    private ProductDto convertJsonToProductDto(String productJson) {
-        return productJsonMapper.mapFrom(productJson,ProductDto.class);
+    private ProductResponse convertJsonToProductDto(String productJson) {
+        return productJsonMapper.mapFrom(productJson,ProductResponse.class);
     }
 
 

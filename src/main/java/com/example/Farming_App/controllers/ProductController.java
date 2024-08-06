@@ -1,9 +1,10 @@
 package com.example.Farming_App.controllers;
 
 import com.example.Farming_App.constants.ProductsConstants;
-import com.example.Farming_App.dto.ProductDto;
+import com.example.Farming_App.dto.product.ProductDto;
 import com.example.Farming_App.dto.ResponseDto;
-import com.example.Farming_App.services.ImageService;
+import com.example.Farming_App.dto.product.ProductRequest;
+import com.example.Farming_App.dto.product.ProductResponse;
 import com.example.Farming_App.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,16 +33,16 @@ public class ProductController {
                                              @RequestParam("quantity") int quantity,
                                              @RequestPart("images") List<MultipartFile> images){
 
-        ProductDto productDto = new ProductDto();
-        productDto.setName(name);
-        productDto.setPrice(price);
-        productDto.setDiscount(discount);
-        productDto.setDescription(description);
-        productDto.setCategoryId(categoryId);
-        productDto.setQuantity(quantity);
-        productDto.setImages(images);
+        ProductRequest productRequest = new ProductRequest();
+        productRequest.setName(name);
+        productRequest.setPrice(price);
+        productRequest.setDiscount(discount);
+        productRequest.setDescription(description);
+        productRequest.setCategoryId(categoryId);
+        productRequest.setQuantity(quantity);
+        productRequest.setImages(images);
 
-        boolean isAdded = productService.addProduct(productDto);
+        boolean isAdded = productService.addProduct(productRequest);
         if (isAdded) {
             return ResponseEntity
                     .status(HttpStatus.OK)
@@ -56,7 +56,7 @@ public class ProductController {
 
     @GetMapping("/list-product")
     public ResponseEntity<?> getListProductFromUser(){
-        List<ProductDto> productDtos=productService.getListProduct();
+        List<ProductResponse> productDtos=productService.getListProduct();
         if(productDtos.isEmpty() || Objects.isNull(productDtos))
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
