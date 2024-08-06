@@ -56,14 +56,14 @@ public class ProductController {
 
     @GetMapping("/list-product")
     public ResponseEntity<?> getListProductFromUser(){
-        List<ProductResponse> productDtos=productService.getListProduct();
-        if(productDtos.isEmpty() || Objects.isNull(productDtos))
+        List<ProductResponse> productResponses=productService.getListProduct();
+        if(productResponses.isEmpty() || Objects.isNull(productResponses))
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ResponseDto(ProductsConstants.STATUS_500,ProductsConstants.MESSAGE_500));
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(productDtos);
+                .body(productResponses);
     }
 
     @DeleteMapping("/remove-product/{id}")
